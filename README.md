@@ -46,7 +46,7 @@ The Home Screen was created with the intention of getting from the user the loca
 
 ### Search location Screen
 
-In the Search location Screen you can search any location in the World and discover its weather and 5 day forecast. <br>
+In the Search location Screen you can search any location in the World and discover its current weather and 5 day forecast. <br>
 In addition, the application keeps a record of the latest 20 searches performed by the user and displays it in the Search location Screen when nothing is being searched.
 
 ### Forecast Screen
