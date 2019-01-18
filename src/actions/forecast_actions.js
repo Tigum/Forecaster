@@ -70,9 +70,9 @@ export const loadForecast = (lat, lon) => async (dispatch) => {
             completeForecast.push(singleDay)
         }
 
-        //This if statement takes care of the forecast for today after 9pm,
+        //This `if` statement takes care of the forecast for the current day after 9pm,
         //The link in line 13 retrieves the weather every 3 hours, and past 9pm it doesn't retrieve anything for the current day
-        //So this if block reached a different path to the API to get the current weather after 9pm and display it to the user
+        //So this `if` block reaches a different path in the API to get the current weather after 9pm and display it to the user
         if (!completeForecast[0].dayForecast || completeForecast[0].dayForecast.length < 1) {
             completeForecast.shift()
 
