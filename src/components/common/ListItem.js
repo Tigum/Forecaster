@@ -12,10 +12,10 @@ class ListItem extends Component {
 
     render() {
         const { item, additionalStyle, textColor } = this.props
-        
+
         return (
-            <div style={{...styles.textDiv, ...additionalStyle}} onClick={this.onSelectLocation.bind(this)}>
-                <h3 style={{...styles.text, ...textColor}}>{item.matching_full_name}</h3>
+            <div style={{ ...styles.textDiv, ...additionalStyle }} onClick={this.onSelectLocation.bind(this)}>
+                <h3 style={{ ...styles.text, ...textColor }}>{item.matching_full_name}</h3>
             </div>
         )
     }

@@ -177,7 +177,7 @@ const styles = {
         color: 'dimgrey'
     },
     error: {
-        marginTop: 0 ,
+        marginTop: 0,
         marginBottom: -5,
         color: '#b7b7b7'
     }

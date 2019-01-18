@@ -1,4 +1,4 @@
-import { 
+import {
     setUnit,
     resetApp
 } from '../forecast_actions'

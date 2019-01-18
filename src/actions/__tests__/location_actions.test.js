@@ -1,4 +1,4 @@
-import { 
+import {
     searchInputChanged,
     clearSearchResults,
 } from '../location_actions'
