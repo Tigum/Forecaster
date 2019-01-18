@@ -38,6 +38,9 @@ Two different APIs were used:<br>
 2-) OpenWeatherMap 5 day Forecast API, which was used to fetch data about the current weather of the day, and also the forecast for the next 5 days
 
 The application shows details about temperature, humidity, wind speed, hour by hour forecast, and also provides different degree units to be displayed ( Celsius, Kelvin, and Fahrenheit ). 
+
+Jest and Enzyme was used for testing.
+
 The entire application is responsive.
 
 ### Home Screen
