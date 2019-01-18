@@ -1,0 +1,42 @@
+{
+    "coord": {
+        "lon": 12.7,
+        "lat": 42.95
+    },
+    "weather": [
+        {
+            "id": 803,
+            "main": "Clouds",
+            "description": "broken clouds",
+            "icon": "04n"
+        }
+    ],
+    "base": "stations",
+    "main": {
+        "temp": 276.23,
+        "pressure": 1013,
+        "humidity": 87,
+        "temp_min": 271.15,
+        "temp_max": 282.15
+    },
+    "visibility": 9000,
+    "wind": {
+        "speed": 3.6,
+        "deg": 150
+    },
+    "clouds": {
+        "all": 75
+    },
+    "dt": 1547762100,
+    "sys": {
+        "type": 1,
+        "id": 6808,
+        "message": 0.002,
+        "country": "IT",
+        "sunrise": 1547706970,
+        "sunset": 1547740990
+    },
+    "id": 3176854,
+    "name": "Foligno",
+    "cod": 200
+}
