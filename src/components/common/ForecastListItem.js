@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { } from '../../actions/location_actions'
 import moment from 'moment'
 import {
     TiWeatherCloudy,
