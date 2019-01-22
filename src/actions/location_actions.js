@@ -38,7 +38,6 @@ export const performCitySearch = (input) => async (dispatch) => {
 export const getCityByLatLong = (latitude, longitude) => async (dispatch) => {
 
     try {
-        loading(dispatch, true)
         const response = await axios.get(`https://api.teleport.org/api/locations/${latitude}%2C%20${longitude}/`)
         const nearCityRes = _.values(response.data._embedded)[0]
         const cityLink = _.values(nearCityRes[0]._links)[0].href
