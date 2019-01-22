@@ -55,7 +55,7 @@ class WelcomeScreen extends Component {
                     id='search_city'
                     text='Choose your city'
                     customStyle={styles.button}
-                    action={() => history.push('/searchCity')}
+                    action={this.goToSearchCity.bind(this)}
                     fontStyle={styles.buttonFontStyle}
                     icon={<FiSearch />}
                     iconSize={20}
