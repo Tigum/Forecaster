@@ -1,0 +1,42 @@
+[
+    {
+        "date": "23/01/2019",
+        "dayForecast": [
+            {
+                "date": "23/01/2019",
+                "dateAndTime": "2019-01-23 13:25:48",
+                "date_ISOString": "2019-01-23T12:25:48.535Z",
+                "description": "broken clouds",
+                "hour": "13",
+                "humidity": 87,
+                "main": "Clouds",
+                "noMoreForecast": true,
+                "pressure": 1013,
+                "speed": 3.6,
+                "temp": 276.23,
+                "temp_max": 282.15,
+                "temp_min": 271.15
+            }
+        ]
+    },
+    {
+        "date": "24/01/2019",
+        "dayForecast": []
+    },
+    {
+        "date": "25/01/2019",
+        "dayForecast": []
+    },
+    {
+        "date": "26/01/2019",
+        "dayForecast": []
+    },
+    {
+        "date": "27/01/2019",
+        "dayForecast": []
+    },
+    {
+        "date": "28/01/2019",
+        "dayForecast": []
+    }
+]

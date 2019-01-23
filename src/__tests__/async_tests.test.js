@@ -9,7 +9,7 @@ import locationResponse from './mocks/locationResultsMocks.json';
 import latLonResponse from './mocks/latLonResultsMocks.json';
 import weatherResponse from './mocks/weatherResultsMocks.json';
 import forecastResponse from './mocks/forecastResultsMocks.json';
-import loadForecastMocks from '../actions/loadForecastMocks'
+import completeForecastResponse from './mocks/completeForecastResponse'
 import getCityByLatLonMocks from './mocks/getCityByLatLonMocks.json'
 import { LOAD_SEARCH_RESULTS, SET_LAT_LONG, SELECT_LOCATION, LOADING, SET_FORECAST, LOAD_LOCAL_RECORDS } from '../actions/types'
 
@@ -182,12 +182,23 @@ describe('forecast_actions async tests', () => {
             request.respondWith({
                 status: 200,
                 response: forecastResponse,
-            });
-            done()
+            })
+            .then(() => {
+                moxios.wait(() => {
+                    const request = moxios.requests.mostRecent();
+                    request.respondWith({
+                        status: 200,
+                        response: weatherResponse,
+                    })
+                    done()
+                });
+            })
         });
 
+
         const expectedActions = [
-            { type: SET_FORECAST, payload: loadForecastMocks(forecastResponse.list, weatherResponse) },
+            { type: SET_FORECAST, payload: completeForecastResponse },
+            { type: LOADING, payload: false }
         ];
 
         const store = mockStore({ forecast: [] })
@@ -198,7 +209,7 @@ describe('forecast_actions async tests', () => {
         } catch (err) {
             console.log(err)
             return
-        }
+        }   
 
     });
 });
