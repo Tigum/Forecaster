@@ -1,0 +1,19 @@
+{
+    "_embedded": {
+        "location:nearest-cities": [
+            {
+                "_links": {
+                    "location:nearest-city": {
+                        "href": "https://api.teleport.org/api/cities/geonameid:3176854/",
+                        "name": "Foligno"
+                    }
+                }
+            }
+        ],
+        "data": {
+            "full_name": "Foligno, Umbria, Italy"
+        }
+    },
+    "_links": {},
+    "count": 1
+}

@@ -4,12 +4,13 @@ import _ from 'lodash'
 import thunk from 'redux-thunk';
 import moxios from 'moxios';
 import expect from 'expect';
-import { performCitySearch, selectSearchedLocation, loadingExport, loadForecast, loadLocalRecords } from '../actions';
+import { performCitySearch, selectSearchedLocation, loadForecast, loadLocalRecords, getCityByLatLong } from '../actions';
 import locationResponse from './mocks/locationResultsMocks.json';
 import latLonResponse from './mocks/latLonResultsMocks.json';
 import weatherResponse from './mocks/weatherResultsMocks.json';
 import forecastResponse from './mocks/forecastResultsMocks.json';
 import loadForecastMocks from '../actions/loadForecastMocks'
+import getCityByLatLonMocks from './mocks/getCityByLatLonMocks.json'
 import { LOAD_SEARCH_RESULTS, SET_LAT_LONG, SELECT_LOCATION, LOADING, SET_FORECAST, LOAD_LOCAL_RECORDS } from '../actions/types'
 
 const middlewares = [thunk];
@@ -26,13 +27,14 @@ describe('location_actions async tests', () => {
         moxios.uninstall();
     });
 
-    it('loads location search results', async () => {
+    it('loads location search results', async (done) => {
         moxios.wait(() => {
             const request = moxios.requests.mostRecent();
             request.respondWith({
                 status: 200,
                 response: locationResponse,
             });
+            done()
         });
 
         const expectedActions = [
@@ -50,73 +52,111 @@ describe('location_actions async tests', () => {
         }
     });
 
-    it('loads selected location', async () => {
+    it('loads searched selected location', async (done) => {
+        const coords = {
+            latitude: 42.95488,
+            longitude: 12.70268
+        }
         moxios.wait(() => {
             const request = moxios.requests.mostRecent();
             request.respondWith({
                 status: 200,
                 response: latLonResponse,
-            });
+            })
+            done()
         });
 
-        const coords = {
-            latitude: 42.9545227,
-            longitude: 12.7029586
-        }
-
-        const expectedActions = [
-            { type: SELECT_LOCATION, payload: latLonResponse.full_name },
-            { type: SET_LAT_LONG, payload: coords }
-        ];
-
-        const store = mockStore({ location: '', latitude: '', longitude: '' })
-
-        try {
-            await store.dispatch(selectSearchedLocation())
-            return expect(store.getActions()).toEqual(expectedActions);
-        } catch (err) {
-            return
-        }
-    })
-
-    it('loading output', async () => {
         const expectedActions = [
             { type: LOADING, payload: true },
+            { type: SELECT_LOCATION, payload: latLonResponse.full_name },
+            { type: SET_LAT_LONG, payload: coords },
+            { type: LOAD_SEARCH_RESULTS, payload: [] }
         ];
 
-        const store = mockStore({ loading: true })
+        const store = mockStore({ location: '', latitude: '', longitude: '', loading: false, searchResults: [] })
 
-        try {
-            await store.dispatch(loadingExport())
-            return expect(store.getActions()).toEqual(expectedActions);
-        } catch (err) {
-            return
+        const info = {
+            link: `https://api.teleport.org/api/locations/${coords.latitude}%2C%20${coords.longitude}/`
         }
-    });
-
-    it('loads local search results', async () => {
-        moxios.wait(() => {
-            const request = moxios.requests.mostRecent();
-            request.respondWith({
-                status: 200,
-                response: []
-            });
-        });
-
-        const expectedActions = [
-            { type: LOAD_LOCAL_RECORDS, payload: [] },
-        ];
-
-        const store = mockStore({ localRecords: [] })
 
         try {
-            await store.dispatch(loadLocalRecords())
+            await store.dispatch(selectSearchedLocation(info))
             return expect(store.getActions()).toEqual(expectedActions);
         } catch (err) {
             console.log(err)
             return
         }
+    })
+
+
+    it('loads local search results', async () => {
+        try {
+            const records = await JSON.parse(localStorage.getItem('forecaster_records'))
+            const response = records || []
+            const expectedActions = [
+                {
+                    type: LOAD_LOCAL_RECORDS, payload: response
+                },
+            ];
+            const store = mockStore({ localRecords: [] })
+            try {
+                await store.dispatch(loadLocalRecords())
+                return expect(store.getActions()).toEqual(expectedActions);
+            } catch (err) {
+                console.log(err)
+                return
+            }
+
+        } catch (err) {
+            console.log(err)
+            return
+        }
     });
+
+
+    it('loads current location', async (done) => {
+        const coords = {
+            latitude: 42.95488,
+            longitude: 12.70268
+        }
+
+        const response = {
+            full_name: 'Foligno, Umbria, Italy'
+        }
+
+        moxios.wait(() => {
+            const request = moxios.requests.mostRecent();
+            request.respondWith({
+                status: 200,
+                response: getCityByLatLonMocks,
+            })
+                .then((res) => {
+                    moxios.wait(() => {
+                        const request = moxios.requests.mostRecent();
+                        request.respondWith({
+                            status: 200,
+                            response: response,
+                        })
+                        done()
+                    });
+                })
+        });
+
+        const expectedActions = [
+            { type: SELECT_LOCATION, payload: 'Foligno, Umbria, Italy' },
+            { type: SET_LAT_LONG, payload: coords },
+        ];
+
+        const store = mockStore({ location: '', latitude: '', longitude: '' })
+
+        try {
+            await store.dispatch(getCityByLatLong(coords.latitude, coords.longitude))
+            return expect(store.getActions()).toEqual(expectedActions);
+        } catch (err) {
+            console.log(err)
+            return
+        }
+    })
 });
 
 
@@ -132,13 +172,18 @@ describe('forecast_actions async tests', () => {
     });
 
 
-    it('load forecast array', async () => {
+    it('load forecast array', async (done) => {
+        const coords = {
+            lat: 42.944,
+            lon: 12.7011
+        }
         moxios.wait(() => {
             const request = moxios.requests.mostRecent();
             request.respondWith({
                 status: 200,
                 response: forecastResponse,
             });
+            done()
         });
 
         const expectedActions = [
@@ -148,12 +193,13 @@ describe('forecast_actions async tests', () => {
         const store = mockStore({ forecast: [] })
 
         try {
-            await store.dispatch(loadForecast())
+            await store.dispatch(loadForecast(coords.lat, coords.lon))
             return expect(store.getActions()).toEqual(expectedActions);
         } catch (err) {
+            console.log(err)
             return
         }
 
-    })
-
+    });
 });
+
